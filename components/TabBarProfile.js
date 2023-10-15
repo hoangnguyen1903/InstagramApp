@@ -1,8 +1,7 @@
-import { View, TouchableOpacity, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Person from '../assets/img/person.jpg';
+import { Animated, View, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const TabBar = ({ state, descriptors, navigation }) => {
+const TabBarProfile = ({ state, descriptors, navigation, position }) => {
   return (
     <View style={{ flexDirection: 'row' }}>
       {state.routes.map((route, index) => {
@@ -24,7 +23,6 @@ const TabBar = ({ state, descriptors, navigation }) => {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            // The `merge: true` option makes sure that the params inside the tab screen are preserved
             navigation.navigate({ name: route.name, merge: true });
           }
         };
@@ -35,6 +33,12 @@ const TabBar = ({ state, descriptors, navigation }) => {
             target: route.key,
           });
         };
+
+        const inputRange = state.routes.map((_, i) => i);
+        const opacity = position.interpolate({
+          inputRange,
+          outputRange: inputRange.map((i) => (i === index ? 1 : 0)),
+        });
 
         return (
           <TouchableOpacity
@@ -50,37 +54,13 @@ const TabBar = ({ state, descriptors, navigation }) => {
               style={{
                 alignItems: 'center',
                 paddingVertical: '15px',
-                backgroundColor: isFocused ? 'black' : 'white',
+                borderBottomWidth: '1px',
+                borderStyle: 'solid',
+                borderBottomColor: 'black',
+                opacity: isFocused ? 1 : 0.5,
               }}
             >
-              {label === 'Profile' ? (
-                <Image
-                  source={Person}
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '30px',
-                  }}
-                />
-              ) : (
-                <Icon
-                  name={
-                    label === 'Home'
-                      ? 'home'
-                      : label === 'Search'
-                      ? 'search'
-                      : label === 'NewPost'
-                      ? 'plus-square'
-                      : label === 'Camera'
-                      ? 'camera'
-                      : ''
-                  }
-                  size={24}
-                  style={{
-                    color: isFocused ? 'white' : 'black',
-                  }}
-                />
-              )}
+              <Icon name={label === 'PostList' ? 'th' : 'user-circle'} size={24} color="black" />
             </View>
           </TouchableOpacity>
         );
@@ -89,4 +69,4 @@ const TabBar = ({ state, descriptors, navigation }) => {
   );
 };
 
-export default TabBar;
+export default TabBarProfile;
