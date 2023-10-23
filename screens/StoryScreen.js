@@ -10,15 +10,12 @@ import {
 } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Modal from 'react-native-modal';
+import { Menu } from 'react-native-paper';
 
 const StoryScreen = ({ navigation }) => {
   const [progress, setProgress] = useState(0);
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+  const [visible, setVisible] = useState(false);
+  const [like, isLike] = useState(false);
 
   useEffect(() => {
     const animationDuration = 3000;
@@ -85,9 +82,25 @@ const StoryScreen = ({ navigation }) => {
             >
               18 giờ
             </Text>
-            <TouchableOpacity onPress={toggleModal}>
-              <Icon name="ellipsis-v" size={24} color={'white'} />
-            </TouchableOpacity>
+            <View>
+              <Menu
+                visible={visible}
+                onDismiss={() => setVisible(false)}
+                anchor={
+                  <TouchableOpacity onPress={() => setVisible(true)}>
+                    <Icon name="ellipsis-v" size={24} color="white" />
+                  </TouchableOpacity>
+                }
+                style={{ paddingTop: 40 }}
+              >
+                <Menu.Item onPress={() => {}} title="Ẩn story" leadingIcon="eye-off-outline" />
+                <Menu.Item
+                  onPress={() => navigation.navigate('Home')}
+                  title="Quay lại trang chủ"
+                  leadingIcon="keyboard-return"
+                />
+              </Menu>
+            </View>
           </View>
         </View>
       </ImageBackground>
@@ -115,63 +128,18 @@ const StoryScreen = ({ navigation }) => {
         >
           <TextInput placeholder="Gửi tin nhắn" style={{ outlineStyle: 'none', color: 'white' }} />
         </View>
-        <Icon name="heart" size={24} color={'white'} style={{ marginRight: '15px' }} />
-        <Icon name="paper-plane" size={24} color={'white'} />
+        <TouchableOpacity onPress={() => isLike(!like)}>
+          <Icon
+            name="heart"
+            size={24}
+            color={like ? 'red' : 'white'}
+            style={{ marginRight: '15px' }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="paper-plane" size={24} color={'white'} />
+        </TouchableOpacity>
       </View>
-      <Modal isVisible={isModalVisible}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <View
-            style={{
-              backgroundColor: 'white',
-              paddingHorizontal: 30,
-              paddingVertical: 30,
-              borderRadius: 30,
-            }}
-          >
-            <Text style={{ fontSize: '18px', fontWeight: '600' }}>
-              Bạn có muốn quay lại trang chủ không ?
-            </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-                marginTop: '20px',
-                width: '100%',
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  width: 100,
-                  height: 50,
-                  borderWidth: '1px',
-                  borderStyle: 'solid',
-                  borderColor: 'black',
-                  flex: 1,
-                  justifyContent: 'center',
-                }}
-                onPress={() => navigation.navigate('Home')}
-              >
-                <Text style={{ textAlign: 'center', fontSize: '18px' }}>Có</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: 100,
-                  height: 50,
-                  borderWidth: '1px',
-                  borderStyle: 'solid',
-                  borderColor: 'black',
-                  flex: 1,
-                  justifyContent: 'center',
-                }}
-                onPress={toggleModal}
-              >
-                <Text style={{ textAlign: 'center', fontSize: '18px' }}>Không</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 };

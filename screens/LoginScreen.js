@@ -15,7 +15,7 @@ const LoginScreen = ({ navigation }) => {
       />
       <View style={{ marginTop: '40px' }}>
         <TextInput
-          placeholder="Tên người dùng, email/số di động"
+          placeholder="Tên người dùng hoặc email"
           style={{
             padding: '15px',
             borderWidth: '1px',

@@ -2,11 +2,12 @@ import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import FormatTimestamp from '../utils/FormatTimestamp';
 import { useState } from 'react';
+import { Menu, Avatar } from 'react-native-paper';
 
-const Post = (props) => {
-  const { userName, avatarUrl, caption, imageUrl, likes, comments, timestamp, location } =
-    props.item;
-  const [like, isLike] = useState('black');
+const Post = ({ item, setModal }) => {
+  const { userName, avatarUrl, caption, imageUrl, likes, comments, timestamp, location } = item;
+  const [like, isLike] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   return (
     <View
@@ -24,21 +25,37 @@ const Post = (props) => {
         }}
       >
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-          <Image
-            source={avatarUrl}
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '30px',
-              marginRight: '10px',
-            }}
-          />
-          <View>
+          <Avatar.Image source={avatarUrl} size={50} />
+          <View style={{ marginLeft: '10px' }}>
             <Text style={{ fontStyle: 'italic', fontSize: '16px' }}>{userName}</Text>
             <Text style={{ fontSize: '16px', fontWeight: 'bold' }}>{location}</Text>
           </View>
         </View>
-        <Icon name="ellipsis-v" size={24} />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}
+        >
+          <Menu
+            visible={visible}
+            onDismiss={() => setVisible(false)}
+            anchor={
+              <TouchableOpacity onPress={() => setVisible(true)}>
+                <Icon name="ellipsis-v" size={24} />
+              </TouchableOpacity>
+            }
+            style={{ paddingTop: 40 }}
+          >
+            <Menu.Item onPress={() => {}} title="Ẩn bài viết" leadingIcon="eye-off-outline" />
+            <Menu.Item
+              onPress={() => {}}
+              title="Thêm vào mục yêu thích"
+              leadingIcon="cards-heart-outline"
+            />
+            <Menu.Item onPress={() => {}} title="Bỏ theo dõi" leadingIcon="delete-outline" />
+          </Menu>
+        </View>
       </View>
       <View style={{ marginTop: '10px' }}>
         <Image source={imageUrl} style={{ width: '100%', height: '400px' }} />
@@ -53,10 +70,15 @@ const Post = (props) => {
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => isLike('red')}>
-              <Icon name="heart" size={28} style={{ marginRight: '15px' }} color={like} />
+            <TouchableOpacity onPress={() => isLike(!like)}>
+              <Icon
+                name="heart"
+                size={28}
+                style={{ marginRight: '15px' }}
+                color={like ? 'red' : 'black'}
+              />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setModal(true)}>
               <Icon name="comment" size={28} style={{ marginRight: '15px' }} />
             </TouchableOpacity>
             <TouchableOpacity>
@@ -80,21 +102,16 @@ const Post = (props) => {
           <Text style={{ fontWeight: 'bold', fontSize: '16px' }}>{userName}</Text>
           <Text style={{ fontWeight: '400', fontSize: '16px', marginLeft: '5px' }}>{caption}</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setModal(true)}>
           <Text style={{ fontSize: '16px', color: '#ccccc', marginBottom: '10px' }}>
             Xem tất cả {comments} bình luận
           </Text>
         </TouchableOpacity>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: '10px' }}>
-          <Image
-            source={avatarUrl}
-            style={{ width: '24px', height: '24px', borderRadius: '30px', marginRight: '10px' }}
-          />
-          <TextInput
-            style={{ outlineStyle: 'none' }}
-            placeholder="Thêm bình luận..."
-            placeholderTextColor="#ccccc"
-          />
+          <Avatar.Image source={avatarUrl} size={30} />
+          <TouchableOpacity style={{ marginLeft: '10px' }} onPress={() => setModal(true)}>
+            <Text style={{ color: 'rgba(0,0,0,0.5)', fontSize: '16px' }}>Thêm bình luận...</Text>
+          </TouchableOpacity>
         </View>
         <Text style={{ color: '#ccccc' }}>{FormatTimestamp(timestamp)}</Text>
       </View>

@@ -1,6 +1,6 @@
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Person from '../assets/img/person.jpg';
+import { Avatar } from 'react-native-paper';
 
 const TabBar = ({ state, descriptors, navigation }) => {
   return (
@@ -54,14 +54,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
               }}
             >
               {label === 'Profile' ? (
-                <Image
-                  source={Person}
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '30px',
-                  }}
-                />
+                <Avatar.Image source={require('../assets/img/person.jpg')} size={24} />
               ) : (
                 <Icon
                   name={

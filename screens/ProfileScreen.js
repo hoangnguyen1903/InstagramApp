@@ -1,13 +1,13 @@
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Person from '../assets/img/person.jpg';
 import TabBarProfile from '../components/TabBarProfile';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import PostBanner from '../components/PostBanner';
+import { Avatar } from 'react-native-paper';
 
 const TopTab = createMaterialTopTabNavigator();
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
   return (
     <View style={{ width: '100%', height: '100%' }}>
       <View
@@ -39,10 +39,7 @@ const ProfileScreen = () => {
           }}
         >
           <View style={{ alignItems: 'center' }}>
-            <Image
-              source={Person}
-              style={{ width: '100px', height: '100px', borderRadius: '50px' }}
-            />
+            <Avatar.Image source={require('../assets/img/person.jpg')} size={80} />
             <Text
               style={{ fontSize: '16px', color: 'black', fontWeight: 'bold', marginTop: '5px' }}
             >
@@ -53,16 +50,22 @@ const ProfileScreen = () => {
             <Text style={{ fontSize: '20px', color: 'black', fontWeight: 'bold' }}>0</Text>
             <Text style={{ fontSize: '16px', color: 'black', fontWeight: '400' }}>Bài viết</Text>
           </View>
-          <View style={{ alignItems: 'center', marginLeft: '10px' }}>
+          <TouchableOpacity
+            style={{ alignItems: 'center', marginLeft: '10px' }}
+            onPress={() => navigation.navigate('Follow', { initialRouteName: 'Follower' })}
+          >
             <Text style={{ fontSize: '20px', color: 'black', fontWeight: 'bold' }}>0</Text>
             <Text style={{ fontSize: '16px', color: 'black', fontWeight: '400' }}>
               Người the...
             </Text>
-          </View>
-          <View style={{ alignItems: 'center', marginLeft: '10px' }}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ alignItems: 'center', marginLeft: '10px' }}
+            onPress={() => navigation.navigate('Follow', { initialRouteName: 'Following' })}
+          >
             <Text style={{ fontSize: '20px', color: 'black', fontWeight: 'bold' }}>0</Text>
             <Text style={{ fontSize: '16px', color: 'black', fontWeight: '400' }}>Đang the...</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -81,6 +84,7 @@ const ProfileScreen = () => {
               borderTopLeftRadius: '5px',
               borderBottomLeftRadius: '5px',
             }}
+            onPress={() => navigation.navigate('EditProfile')}
           >
             <Text style={{ color: 'black', fontWeight: 'bold' }}>Chỉnh sửa trang cá...</Text>
           </TouchableOpacity>
@@ -119,7 +123,7 @@ const ProfileScreen = () => {
   );
 };
 
-const PostList = () => {
+const PostList = ({ navigation }) => {
   return (
     <View>
       <View
@@ -130,9 +134,9 @@ const PostList = () => {
           marginBottom: '5px',
         }}
       >
-        <PostBanner />
-        <PostBanner />
-        <PostBanner />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
       </View>
       <View
         style={{
@@ -142,9 +146,9 @@ const PostList = () => {
           marginBottom: '5px',
         }}
       >
-        <PostBanner />
-        <PostBanner />
-        <PostBanner />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
       </View>
       <View
         style={{
@@ -154,14 +158,14 @@ const PostList = () => {
           marginBottom: '5px',
         }}
       >
-        <PostBanner />
-        <PostBanner />
-        <PostBanner />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
       </View>
     </View>
   );
 };
-const FriendList = () => {
+const FriendList = ({ navigation }) => {
   return (
     <View>
       <View
@@ -172,9 +176,9 @@ const FriendList = () => {
           marginBottom: '5px',
         }}
       >
-        <PostBanner />
-        <PostBanner />
-        <PostBanner />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
       </View>
       <View
         style={{
@@ -184,9 +188,9 @@ const FriendList = () => {
           marginBottom: '5px',
         }}
       >
-        <PostBanner />
-        <PostBanner />
-        <PostBanner />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
       </View>
       <View
         style={{
@@ -196,9 +200,9 @@ const FriendList = () => {
           marginBottom: '5px',
         }}
       >
-        <PostBanner />
-        <PostBanner />
-        <PostBanner />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
+        <PostBanner navigation={navigation} />
       </View>
     </View>
   );

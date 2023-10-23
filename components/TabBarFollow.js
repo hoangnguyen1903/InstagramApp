@@ -1,7 +1,6 @@
-import { View, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { View, TouchableOpacity, Text } from 'react-native';
 
-const TabBarProfile = ({ state, descriptors, navigation, position }) => {
+const TabBarFollow = ({ state, descriptors, navigation, position }) => {
   return (
     <View style={{ flexDirection: 'row' }}>
       {state.routes.map((route, index) => {
@@ -60,7 +59,7 @@ const TabBarProfile = ({ state, descriptors, navigation, position }) => {
                 opacity: isFocused ? 1 : 0.5,
               }}
             >
-              <Icon name={label === 'PostList' ? 'th' : 'user-circle'} size={24} color="black" />
+              <Text>{label === 'Follower' ? 'Người theo dõi: 3' : 'Đang theo dõi: 69'}</Text>
             </View>
           </TouchableOpacity>
         );
@@ -69,4 +68,4 @@ const TabBarProfile = ({ state, descriptors, navigation, position }) => {
   );
 };
 
-export default TabBarProfile;
+export default TabBarFollow;

@@ -27,7 +27,7 @@ const SignupScreen = () => {
           }}
         />
         <TextInput
-          placeholder="Email hoặc số di động"
+          placeholder="Email"
           style={{
             padding: '15px',
             borderWidth: '1px',

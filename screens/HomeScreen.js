@@ -1,8 +1,12 @@
-import { Image, Text, View, ScrollView, FlatList, TouchableOpacity } from 'react-native';
+import { Image, Text, View, ScrollView, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import Name from '../assets/img/name.png';
 import Person from '../assets/img/person.jpg';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Post from '../components/Post';
+import { Menu, Modal, Portal, Avatar } from 'react-native-paper';
+import { useState } from 'react';
+import Comment from '../components/Comment';
+import CommentModal from '../components/CommentModal';
 
 const postList = [
   {
@@ -107,6 +111,9 @@ const commentList = [
 ];
 
 const HomeScreen = ({ navigation }) => {
+  const [visible, setVisible] = useState(false);
+  const [modal, setModal] = useState(false);
+
   return (
     <View style={{ width: '100%', height: '100%' }}>
       <View
@@ -115,20 +122,36 @@ const HomeScreen = ({ navigation }) => {
           justifyContent: 'space-between',
           paddingVertical: '10px',
           paddingHorizontal: '15px',
+          alignItems: 'center',
         }}
       >
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <Image source={Name} style={{ width: '105px', height: '30px', marginRight: '5px' }} />
-          <Icon name="angle-down" size="24px" />
+        <View>
+          <Menu
+            visible={visible}
+            onDismiss={() => setVisible(false)}
+            anchor={
+              <TouchableOpacity
+                onPress={() => setVisible(true)}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <Image
+                  source={Name}
+                  style={{ width: '105px', height: '30px', marginRight: '5px' }}
+                />
+                <Icon name="angle-down" size="24px" />
+              </TouchableOpacity>
+            }
+            style={{ paddingTop: 40 }}
+          >
+            <Menu.Item onPress={() => {}} title="Đang theo dõi" trailingIcon="account-supervisor" />
+            <Menu.Item onPress={() => {}} title="Yêu thích" trailingIcon="star-outline" />
+          </Menu>
         </View>
         <View
           style={{
-            paddingVertical: '15px',
             flexDirection: 'row',
             alignItems: 'center',
           }}
@@ -201,10 +224,11 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <FlatList
           data={postList}
-          renderItem={({ item }) => <Post item={item} />}
+          renderItem={({ item }) => <Post item={item} setModal={setModal} />}
           keyExtractor={(item) => item.postId}
         />
       </ScrollView>
+      <CommentModal modal={modal} setModal={setModal} />
     </View>
   );
 };

@@ -14,8 +14,6 @@ const ImageUpload = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
@@ -27,7 +25,7 @@ const ImageUpload = () => {
         source={{ uri: image ? image : DefaultImage }}
         style={{
           width: '100%',
-          height: 400,
+          height: 300,
           overflow: 'auto',
           objectFit: 'cover',
           marginBottom: '10px',
