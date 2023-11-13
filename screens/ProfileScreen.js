@@ -3,11 +3,24 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabBarProfile from '../components/TabBarProfile';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import PostBanner from '../components/PostBanner';
-import { Avatar } from 'react-native-paper';
+import { Avatar, Menu } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../store/auth/authSlice';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const TopTab = createMaterialTopTabNavigator();
 
 const ProfileScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const [visible, setVisible] = useState(false);
+  const { currentUser } = useSelector((state) => state.auth);
+
+  const signout = () => {
+    dispatch(logout());
+    navigation.navigate('Login');
+  };
+
   return (
     <View style={{ width: '100%', height: '100%' }}>
       <View
@@ -19,14 +32,30 @@ const ProfileScreen = ({ navigation }) => {
         }}
       >
         <Text style={{ fontSize: '24px', fontWeight: 'bold', marginRight: 'auto' }}>
-          hoangnguyen.19
+          {currentUser?.userName}
         </Text>
         <TouchableOpacity style={{ marginRight: '25px' }}>
           <Icon name="plus-square" size={24} />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Icon name="bars" size={24} />
-        </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}
+        >
+          <Menu
+            visible={visible}
+            onDismiss={() => setVisible(false)}
+            anchor={
+              <TouchableOpacity onPress={() => setVisible(true)}>
+                <Icon name="bars" size={24} />
+              </TouchableOpacity>
+            }
+            style={{ paddingTop: 40 }}
+          >
+            <Menu.Item onPress={signout} title="Đăng xuất" leadingIcon="logout" />
+          </Menu>
+        </View>
       </View>
       <ScrollView>
         <View
@@ -39,22 +68,26 @@ const ProfileScreen = ({ navigation }) => {
           }}
         >
           <View style={{ alignItems: 'center' }}>
-            <Avatar.Image source={require('../assets/img/person.jpg')} size={80} />
+            <Avatar.Image source={currentUser?.avatarUrl} size={80} />
             <Text
               style={{ fontSize: '16px', color: 'black', fontWeight: 'bold', marginTop: '5px' }}
             >
-              hoangnguyen.19
+              {currentUser?.userName}
             </Text>
           </View>
           <View style={{ alignItems: 'center', marginLeft: '10px' }}>
-            <Text style={{ fontSize: '20px', color: 'black', fontWeight: 'bold' }}>0</Text>
+            <Text style={{ fontSize: '20px', color: 'black', fontWeight: 'bold' }}>
+              {currentUser?.posts?.length}
+            </Text>
             <Text style={{ fontSize: '16px', color: 'black', fontWeight: '400' }}>Bài viết</Text>
           </View>
           <TouchableOpacity
             style={{ alignItems: 'center', marginLeft: '10px' }}
             onPress={() => navigation.navigate('Follow', { initialRouteName: 'Follower' })}
           >
-            <Text style={{ fontSize: '20px', color: 'black', fontWeight: 'bold' }}>0</Text>
+            <Text style={{ fontSize: '20px', color: 'black', fontWeight: 'bold' }}>
+              {currentUser?.followers?.length}
+            </Text>
             <Text style={{ fontSize: '16px', color: 'black', fontWeight: '400' }}>
               Người the...
             </Text>
@@ -63,7 +96,9 @@ const ProfileScreen = ({ navigation }) => {
             style={{ alignItems: 'center', marginLeft: '10px' }}
             onPress={() => navigation.navigate('Follow', { initialRouteName: 'Following' })}
           >
-            <Text style={{ fontSize: '20px', color: 'black', fontWeight: 'bold' }}>0</Text>
+            <Text style={{ fontSize: '20px', color: 'black', fontWeight: 'bold' }}>
+              {currentUser?.following?.length}
+            </Text>
             <Text style={{ fontSize: '16px', color: 'black', fontWeight: '400' }}>Đang the...</Text>
           </TouchableOpacity>
         </View>

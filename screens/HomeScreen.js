@@ -1,118 +1,41 @@
 import { Image, Text, View, ScrollView, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import Name from '../assets/img/name.png';
-import Person from '../assets/img/person.jpg';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Post from '../components/Post';
-import { Menu, Modal, Portal, Avatar } from 'react-native-paper';
-import { useState } from 'react';
-import Comment from '../components/Comment';
-import CommentModal from '../components/CommentModal';
-
-const postList = [
-  {
-    postId: '123456789',
-    userId: '987654321',
-    userName: 'hoang.19',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1562093772-c36f2d77edc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80',
-    caption: 'This is a sample post caption.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1617975251517-b90ff061b52e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80',
-    likes: 1000,
-    comments: 50,
-    location: 'Ho Chi Minh City, Viet Nam',
-    timestamp: '2023-10-16T14:30:00',
-  },
-  {
-    postId: '123456789',
-    userId: '987654321',
-    userName: 'hoang.1903',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1888&q=80',
-    caption: 'This is a sample post caption.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1626847152035-cb3f14d8534b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80',
-    likes: 1000,
-    comments: 50,
-    location: 'Ha Noi, Viet Nam',
-    timestamp: '2023-10-16T14:30:00',
-  },
-  {
-    postId: '123456789',
-    userId: '987654321',
-    userName: 'hoang.20',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1899&q=80',
-    caption: 'This is a sample post caption.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1667983786354-1b8f31a5d471?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80',
-    likes: 1000,
-    comments: 50,
-    location: 'New York City, USA',
-    timestamp: '2023-10-16T14:30:00',
-  },
-];
-
-const userList = [
-  {
-    userId: '987654321',
-    userName: 'hoang.19',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1562093772-c36f2d77edc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80',
-    fullName: 'John Doe',
-    followers: 10000,
-    following: 500,
-    posts_count: 150,
-    location: 'New York, NY',
-  },
-  {
-    userId: '987654321',
-    userName: 'hoang.1903',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1888&q=80',
-    fullName: 'John Doe',
-    followers: 10000,
-    following: 500,
-    posts_count: 150,
-    location: 'New York, NY',
-  },
-  {
-    userId: '987654321',
-    userName: 'hoang.20',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1899&q=80',
-    followers: 10000,
-    following: 500,
-    posts_count: 150,
-    location: 'New York, NY',
-  },
-  {
-    userId: '987654321',
-    userName: 'hnguyen.19',
-    avatarUrl:
-      'https://plus.unsplash.com/premium_photo-1674777843203-da3ebb9fbca0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1935&q=80',
-    fullName: 'John Doe',
-    followers: 10000,
-    following: 500,
-    posts_count: 150,
-    location: 'Texas, USA',
-  },
-];
-
-const commentList = [
-  {
-    commentId: '987654321',
-    postId: '123456789',
-    userId: '555555555',
-    content: 'Great photo! 👌',
-    likes: 20,
-    timestamp: '2023-10-16T15:45:00',
-  },
-];
+import { Menu } from 'react-native-paper';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPosts } from '../store/post/postSlice';
 
 const HomeScreen = ({ navigation }) => {
   const [visible, setVisible] = useState(false);
-  const [modal, setModal] = useState(false);
+  const dispatch = useDispatch();
+
+  const { posts } = useSelector((state) => state.post);
+  const { currentUser } = useSelector((state) => state.auth);
+  const [postList, setPostList] = useState([]);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    dispatch(getAllPosts());
+  }, []);
+
+  useEffect(() => {
+    if (posts) {
+      setPostList(posts);
+    }
+  }, [posts]);
+
+  useEffect(() => {
+    if (currentUser) {
+      setUser(currentUser);
+    }
+  }, [currentUser]);
+
+  const handleHidePost = (postId) => {
+    const newPostList = postList.filter((post) => post.id !== postId);
+    setPostList(newPostList);
+  };
 
   return (
     <View style={{ width: '100%', height: '100%' }}>
@@ -182,7 +105,7 @@ const HomeScreen = ({ navigation }) => {
                 style={{ alignItems: 'center' }}
               >
                 <Image
-                  source={Person}
+                  source={user?.avatarUrl}
                   style={{
                     borderRadius: '50px',
                     width: '80px',
@@ -196,10 +119,10 @@ const HomeScreen = ({ navigation }) => {
               </TouchableOpacity>
             </View>
 
-            {userList.length > 0 &&
-              userList.map((item) => {
+            {user?.following?.length > 0 &&
+              user.following.map((item) => {
                 return (
-                  <View key={item.userId} style={{ paddingHorizontal: '5px' }}>
+                  <View key={item._id} style={{ paddingHorizontal: '5px' }}>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('Story')}
                       style={{ alignItems: 'center' }}
@@ -224,11 +147,10 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <FlatList
           data={postList}
-          renderItem={({ item }) => <Post item={item} setModal={setModal} />}
-          keyExtractor={(item) => item.postId}
+          renderItem={({ item }) => <Post item={item} handleHidePost={handleHidePost} />}
+          keyExtractor={(item) => item.id}
         />
       </ScrollView>
-      <CommentModal modal={modal} setModal={setModal} />
     </View>
   );
 };

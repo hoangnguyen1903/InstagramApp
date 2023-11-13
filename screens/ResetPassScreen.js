@@ -1,26 +1,14 @@
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Logo from '../assets/img/logo.png';
 import Meta from '../assets/img/meta.png';
-import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-import { login } from '../store/auth/authSlice';
+import { useSelector } from 'react-redux';
 
-const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('hoang19@gmail.com');
-  const [password, setPassword] = useState('hoang19');
+const ResetPassScreen = () => {
   const { currentUser, token } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
 
-  if (currentUser && token) {
+  if ((currentUser, token)) {
     navigation.navigate('Main');
   }
-
-  const handleLogin = () => {
-    if (email && password) {
-      dispatch(login({ email, password }));
-      navigation.navigate('Main');
-    }
-  };
 
   return (
     <View style={{ width: '100%', height: '100%', paddingHorizontal: '20px' }}>
@@ -33,7 +21,7 @@ const LoginScreen = ({ navigation }) => {
       />
       <View style={{ marginTop: '40px' }}>
         <TextInput
-          placeholder="Tên người dùng hoặc email"
+          placeholder="Tên người dùng"
           style={{
             padding: '15px',
             borderWidth: '1px',
@@ -44,11 +32,9 @@ const LoginScreen = ({ navigation }) => {
             fontWeight: '600',
             fontSize: '18px',
           }}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
         />
         <TextInput
-          placeholder="Mật khẩu"
+          placeholder="Email"
           style={{
             padding: '15px',
             borderWidth: '1px',
@@ -60,9 +46,6 @@ const LoginScreen = ({ navigation }) => {
             fontSize: '18px',
             marginTop: '20px',
           }}
-          secureTextEntry
-          value={password}
-          onChangeText={(text) => setPassword(text)}
         />
       </View>
       <View style={{ marginTop: '40px' }}>
@@ -72,7 +55,6 @@ const LoginScreen = ({ navigation }) => {
             borderRadius: '30px',
             paddingVertical: '15px',
           }}
-          onPress={handleLogin}
         >
           <Text
             style={{
@@ -82,35 +64,20 @@ const LoginScreen = ({ navigation }) => {
               fontWeight: '600',
             }}
           >
-            Đăng nhập
+            Làm mới
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('ResetPassword')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text
             style={{ fontSize: '18px', marginTop: '10px', textAlign: 'center', fontWeight: '600' }}
           >
-            Bạn quên mật khẩu ư?
+            Bạn đã có tài khoản?
           </Text>
         </TouchableOpacity>
       </View>
       <View style={{ marginTop: 'auto', marginBottom: '20px' }}>
-        <TouchableOpacity
-          style={{
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: '#1544eb',
-            paddingVertical: '15px',
-            borderRadius: '30px',
-          }}
-          onPress={() => navigation.navigate('Signup')}
-        >
-          <Text style={{ color: '#1544eb', textAlign: 'center', fontWeight: '600' }}>
-            Tạo tài khoản mới
-          </Text>
-        </TouchableOpacity>
         <View
           style={{
-            marginTop: '10px',
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
@@ -124,4 +91,4 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
-export default LoginScreen;
+export default ResetPassScreen;

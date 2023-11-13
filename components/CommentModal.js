@@ -2,8 +2,20 @@ import { Image, Text, View, ScrollView, TouchableOpacity, TextInput } from 'reac
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Modal, Portal, Avatar } from 'react-native-paper';
 import Comment from '../components/Comment';
+import { useDispatch, useSelector } from 'react-redux';
+import { createComment } from '../store/post/postSlice';
+import { useState } from 'react';
 
-const CommentModal = ({ modal, setModal }) => {
+const CommentModal = ({ modal, setModal, comments, postId }) => {
+  const dispatch = useDispatch();
+  const [content, setContent] = useState('');
+  const { token } = useSelector((state) => state.auth);
+
+  const handleCreate = () => {
+    dispatch(createComment({ postId, content, token }));
+    setContent('');
+  };
+
   return (
     <Portal>
       <Modal visible={modal} onDismiss={() => setModal(false)}>
@@ -35,12 +47,7 @@ const CommentModal = ({ modal, setModal }) => {
             </TouchableOpacity>
           </View>
           <ScrollView style={{ marginTop: '10px' }}>
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
+            {comments?.length > 0 && comments.map((item) => <Comment key={item.id} item={item} />)}
           </ScrollView>
           <View
             style={{
@@ -58,8 +65,10 @@ const CommentModal = ({ modal, setModal }) => {
               placeholder="Viết bình luận..."
               placeholderTextColor="rgba(0,0,0,0.5)"
               style={{ outlineStyle: 'none', width: '220px', fontSize: '18px' }}
+              value={content}
+              onChangeText={(text) => setContent(text)}
             />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleCreate}>
               <Text style={{ color: 'blue', fontSize: '18px' }}>Đăng</Text>
             </TouchableOpacity>
           </View>

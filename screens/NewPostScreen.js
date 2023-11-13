@@ -2,10 +2,20 @@ import { Text, TextInput, TouchableOpacity, View, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ImageUpload from '../components/ImageUpload';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPost } from '../store/post/postSlice';
 
 const NewPostScreen = ({ navigation }) => {
-  const [content, setContent] = useState('');
+  const [caption, setCaption] = useState('');
   const [location, setLocation] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const handleCreate = () => {
+    dispatch(createPost({ post: { caption, location, imageUrl }, token }));
+    navigation.navigate('Home');
+  };
 
   return (
     <View style={{ width: '100%', height: '100%', paddingHorizontal: '15px' }}>
@@ -27,12 +37,12 @@ const NewPostScreen = ({ navigation }) => {
           <Text style={{ color: '#409eff', fontSize: '20px', fontWeight: '600' }}>Chia sẻ</Text>
         </TouchableOpacity>
       </View>
-      <ImageUpload />
-      <View style={{ marginTop: '15px', marginBottom: '30px' }}>
+      <ImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
+      <View style={{ marginBottom: '30px' }}>
         <TextInput
-          value={content}
-          onChangeText={(text) => setContent(text)}
-          placeholder="Nội dung bài viết..."
+          value={caption}
+          onChangeText={(text) => setCaption(text)}
+          placeholder="Nội dung..."
           placeholderTextColor="rgba(0,0,0,0.5)"
           style={{
             outlineStyle: 'none',
@@ -40,14 +50,14 @@ const NewPostScreen = ({ navigation }) => {
             borderBottomColor: '#ccc',
             borderStyle: 'solid',
             paddingBottom: '10px',
-            marginTop: '20px',
+            marginTop: '15px',
             fontSize: '20px',
           }}
         />
         <TextInput
           value={location}
           onChangeText={(text) => setLocation(text)}
-          placeholder="Vị trí bài viết..."
+          placeholder="Vị trí..."
           placeholderTextColor="rgba(0,0,0,0.5)"
           style={{
             outlineStyle: 'none',
@@ -55,13 +65,17 @@ const NewPostScreen = ({ navigation }) => {
             borderBottomColor: '#ccc',
             borderStyle: 'solid',
             paddingBottom: '10px',
-            marginTop: '20px',
+            marginTop: '15px',
             fontSize: '20px',
           }}
         />
       </View>
       <View style={{ marginBottom: '15px' }}>
-        <Button title="Đăng tải" disabled={content && location ? false : true} />
+        <Button
+          onPress={handleCreate}
+          title="Đăng tải"
+          disabled={caption && location && imageUrl ? false : true}
+        />
       </View>
     </View>
   );
