@@ -29,6 +29,8 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     if (currentUser) {
       setUser(currentUser);
+    } else {
+      navigation.navigate('Login');
     }
   }, [currentUser]);
 
@@ -101,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={{ alignItems: 'center', paddingHorizontal: '5px' }}>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Story')}
+                onPress={() => navigation.navigate('Story', { id: currentUser?.id })}
                 style={{ alignItems: 'center' }}
               >
                 <Image
@@ -122,9 +124,9 @@ const HomeScreen = ({ navigation }) => {
             {user?.following?.length > 0 &&
               user.following.map((item) => {
                 return (
-                  <View key={item._id} style={{ paddingHorizontal: '5px' }}>
+                  <View key={item.id} style={{ paddingHorizontal: '5px' }}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('Story')}
+                      onPress={() => navigation.navigate('Story', { id: item.id })}
                       style={{ alignItems: 'center' }}
                     >
                       <Image

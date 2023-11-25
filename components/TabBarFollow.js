@@ -1,6 +1,9 @@
 import { View, TouchableOpacity, Text } from 'react-native';
+import { useSelector } from 'react-redux';
 
 const TabBarFollow = ({ state, descriptors, navigation, position }) => {
+  const { currentUser } = useSelector((state) => state.auth);
+
   return (
     <View style={{ flexDirection: 'row' }}>
       {state.routes.map((route, index) => {
@@ -59,7 +62,11 @@ const TabBarFollow = ({ state, descriptors, navigation, position }) => {
                 opacity: isFocused ? 1 : 0.5,
               }}
             >
-              <Text>{label === 'Follower' ? 'Người theo dõi: 3' : 'Đang theo dõi: 69'}</Text>
+              <Text>
+                {label === 'Follower'
+                  ? `Người theo dõi: ${currentUser?.followers?.length}`
+                  : `Đang theo dõi: ${currentUser?.following?.length}`}
+              </Text>
             </View>
           </TouchableOpacity>
         );

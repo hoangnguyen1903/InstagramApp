@@ -4,11 +4,14 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import TabBarFollow from '../components/TabBarFollow';
 import Search from '../components/Search';
 import Follow from '../components/Follow';
+import { useSelector } from 'react-redux';
 
 const TopTab = createMaterialTopTabNavigator();
 
 const FollowScreen = ({ navigation, route }) => {
   const { initialRouteName } = route.params;
+  const { currentUser } = useSelector((state) => state.auth);
+
   return (
     <View style={{ width: '100%', height: '100%' }}>
       <View
@@ -30,7 +33,7 @@ const FollowScreen = ({ navigation, route }) => {
             marginRight: 'auto',
           }}
         >
-          hoangnguyen.19
+          {currentUser?.userName}
         </Text>
       </View>
       <TopTab.Navigator
@@ -47,35 +50,30 @@ const FollowScreen = ({ navigation, route }) => {
 };
 
 const FollowerList = () => {
+  const { currentUser } = useSelector((state) => state.auth);
+
   return (
     <ScrollView style={{ marginTop: '15px' }}>
       <Search />
       <View style={{ paddingHorizontal: '15px' }}>
-        <Follow name="Follower" />
-        <Follow name="Follower" />
-        <Follow name="Follower" />
-        <Follow name="Follower" />
-        <Follow name="Follower" />
-        <Follow name="Follower" />
-        <Follow name="Follower" />
-        <Follow name="Follower" />
-        <Follow name="Follower" />
-        <Follow name="Follower" />
-        <Follow name="Follower" />
-        <Follow name="Follower" />
+        {currentUser &&
+          currentUser?.followers?.length > 0 &&
+          currentUser?.followers?.map((user) => <Follow name="Follower" user={user} />)}
       </View>
     </ScrollView>
   );
 };
 
 const FollowingList = () => {
+  const { currentUser } = useSelector((state) => state.auth);
+
   return (
     <ScrollView style={{ marginTop: '15px' }}>
       <Search />
       <View style={{ paddingHorizontal: '15px' }}>
-        <Follow />
-        <Follow />
-        <Follow />
+        {currentUser &&
+          currentUser?.following?.length > 0 &&
+          currentUser?.following?.map((user) => <Follow user={user} />)}
       </View>
     </ScrollView>
   );

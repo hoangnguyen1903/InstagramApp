@@ -14,6 +14,9 @@ const NewPostScreen = ({ navigation }) => {
 
   const handleCreate = () => {
     dispatch(createPost({ post: { caption, location, imageUrl }, token }));
+    setCaption('');
+    setLocation('');
+    setImageUrl('');
     navigation.navigate('Home');
   };
 

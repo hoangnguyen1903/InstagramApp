@@ -1,4 +1,4 @@
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabBarProfile from '../components/TabBarProfile';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -6,8 +6,8 @@ import PostBanner from '../components/PostBanner';
 import { Avatar, Menu } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/auth/authSlice';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { getAllPostsForUser } from '../store/post/postForUserSlice';
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -15,6 +15,11 @@ const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const { currentUser } = useSelector((state) => state.auth);
+  const { posts } = useSelector((state) => state.postForUser);
+
+  useEffect(() => {
+    dispatch(getAllPostsForUser(currentUser.id));
+  }, []);
 
   const signout = () => {
     dispatch(logout());
@@ -77,7 +82,7 @@ const ProfileScreen = ({ navigation }) => {
           </View>
           <View style={{ alignItems: 'center', marginLeft: '10px' }}>
             <Text style={{ fontSize: '20px', color: 'black', fontWeight: 'bold' }}>
-              {currentUser?.posts?.length}
+              {posts?.length}
             </Text>
             <Text style={{ fontSize: '16px', color: 'black', fontWeight: '400' }}>Bài viết</Text>
           </View>
@@ -159,87 +164,46 @@ const ProfileScreen = ({ navigation }) => {
 };
 
 const PostList = ({ navigation }) => {
+  const { posts } = useSelector((state) => state.postForUser);
+
+  const renderPostRow = ({ item }) => (
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+      }}
+    >
+      {item.map((post) => (
+        <PostBanner key={post.id} navigation={navigation} post={post} />
+      ))}
+    </View>
+  );
+
   return (
-    <View>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: '5px',
-        }}
-      >
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-      </View>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: '5px',
-        }}
-      >
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-      </View>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: '5px',
-        }}
-      >
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-      </View>
+    <ScrollView>
+      <FlatList
+        data={chunkArray(posts, 3)}
+        renderItem={renderPostRow}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </ScrollView>
+  );
+};
+const FriendList = () => {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={{ color: 'rgba(0,0,0,0.5)', fontWeight: 'bold', fontSize: '24px' }}>
+        Hiện tại bạn chưa có bạn bè
+      </Text>
     </View>
   );
 };
-const FriendList = ({ navigation }) => {
-  return (
-    <View>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: '5px',
-        }}
-      >
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-      </View>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: '5px',
-        }}
-      >
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-      </View>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: '5px',
-        }}
-      >
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-        <PostBanner navigation={navigation} />
-      </View>
-    </View>
+
+const chunkArray = (array, size) => {
+  return Array.from({ length: Math.ceil(array.length / size) }, (_, index) =>
+    array.slice(index * size, (index + 1) * size),
   );
 };
 

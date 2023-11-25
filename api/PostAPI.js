@@ -15,6 +15,23 @@ const getAllPosts = async () => {
   }
 };
 
+const getAllPostsForUser = async (userId) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:5000/api/v1/posts/users/${userId}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Get all posts failed');
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const getPostById = async (postId) => {
   try {
     const response = await fetch(`http://127.0.0.1:5000/api/v1/posts/${postId}`, {
@@ -141,6 +158,7 @@ const unlikePost = async (postId, token) => {
 
 const PostAPI = {
   getAllPosts,
+  getAllPostsForUser,
   getPostById,
   createPost,
   updatePost,

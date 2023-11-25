@@ -9,7 +9,7 @@ import { useState } from 'react';
 const CommentModal = ({ modal, setModal, comments, postId }) => {
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
-  const { token } = useSelector((state) => state.auth);
+  const { token, currentUser } = useSelector((state) => state.auth);
 
   const handleCreate = () => {
     dispatch(createComment({ postId, content, token }));
@@ -60,7 +60,7 @@ const CommentModal = ({ modal, setModal, comments, postId }) => {
               borderTopColor: 'black',
             }}
           >
-            <Avatar.Image source={require('../assets/img/person.jpg')} size={50} />
+            <Avatar.Image source={currentUser?.avatarUrl} size={50} />
             <TextInput
               placeholder="Viết bình luận..."
               placeholderTextColor="rgba(0,0,0,0.5)"

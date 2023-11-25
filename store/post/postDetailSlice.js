@@ -9,7 +9,7 @@ const initialState = {
   message: '',
 };
 
-export const getPostById = createAsyncThunk('postDetail/getPostById', async (postId, thunkAPI) => {
+export const getPostById = createAsyncThunk('post/getPostById', async (postId, thunkAPI) => {
   try {
     return await PostAPI.getPostById(postId);
   } catch (error) {
@@ -22,7 +22,7 @@ export const getPostById = createAsyncThunk('postDetail/getPostById', async (pos
 });
 
 export const updatePost = createAsyncThunk(
-  'postDetail/updatePost',
+  'post/updatePost',
   async ({ postId, post, token }, thunkAPI) => {
     try {
       return await PostAPI.updatePost(postId, post, token);
@@ -36,23 +36,20 @@ export const updatePost = createAsyncThunk(
   },
 );
 
-export const likePost = createAsyncThunk(
-  'postDetail/likePost',
-  async ({ postId, token }, thunkAPI) => {
-    try {
-      return await PostAPI.likePost(postId, token);
-    } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
+export const likePost = createAsyncThunk('post/likePost', async ({ postId, token }, thunkAPI) => {
+  try {
+    return await PostAPI.likePost(postId, token);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
 
 export const unlikePost = createAsyncThunk(
-  'postDetail/unlikePost',
+  'post/unlikePost',
   async ({ postId, token }, thunkAPI) => {
     try {
       return await PostAPI.unlikePost(postId, token);

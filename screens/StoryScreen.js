@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   ImageBackground,
@@ -11,11 +11,20 @@ import {
 import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Menu } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserById } from '../store/user/userDetailSlice';
 
-const StoryScreen = ({ navigation }) => {
+const StoryScreen = ({ navigation, route }) => {
   const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(false);
   const [like, isLike] = useState(false);
+  const { id } = route.params;
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.userDetail);
+  console.log(user);
+  useEffect(() => {
+    dispatch(getUserById(id));
+  }, [id]);
 
   useEffect(() => {
     const animationDuration = 3000;
@@ -42,9 +51,7 @@ const StoryScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, width: '100%', height: '100%' }}>
       <ImageBackground
-        source={
-          'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80'
-        }
+        source={user?.posts?.[0].imageUrl}
         style={{ flex: 1, width: '100%', height: '100%' }}
       >
         <View style={{ flex: 1, marginTop: '5px' }}>
@@ -67,15 +74,13 @@ const StoryScreen = ({ navigation }) => {
             }}
           >
             <Image
-              source={
-                'https://images.unsplash.com/photo-1504593811423-6dd665756598?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
-              }
+              source={user?.avatarUrl}
               style={{ width: 40, height: 40, borderRadius: 20, marginRight: '10px' }}
             />
             <Text
               style={{ color: 'white', fontSize: '18px', fontWeight: 'bold', marginRight: '10px' }}
             >
-              hoangnguyen.19
+              {user?.userName}
             </Text>
             <Text
               style={{ color: 'rgba(255,255,255,0.7)', fontWeight: '400', marginRight: 'auto' }}

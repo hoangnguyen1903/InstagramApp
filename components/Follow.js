@@ -1,7 +1,8 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Avatar } from 'react-native-paper';
 
-const Follow = ({ name }) => {
+const Follow = ({ name, user }) => {
+  const { id, userName, fullName, avatarUrl } = user;
   return (
     <View
       style={{
@@ -11,10 +12,10 @@ const Follow = ({ name }) => {
         marginBottom: '15px',
       }}
     >
-      <Avatar.Image size={60} source={require('../assets/img/person.jpg')} />
+      <Avatar.Image size={60} source={avatarUrl} />
       <View style={{ justifyContent: 'space-around' }}>
-        <Text style={{ color: 'black', fontWeight: 'bold' }}>hoangnguyen.19</Text>
-        <Text style={{ color: 'rgba(0,0,0,0.7)' }}>Huy Hoang Nguyen</Text>
+        <Text style={{ color: 'black', fontWeight: 'bold' }}>{userName}</Text>
+        <Text style={{ color: 'rgba(0,0,0,0.7)' }}>{fullName}</Text>
       </View>
       {name === 'Follower' ? (
         <>

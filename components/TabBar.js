@@ -1,8 +1,11 @@
 import { View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Avatar } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 
 const TabBar = ({ state, descriptors, navigation }) => {
+  const { currentUser } = useSelector((state) => state.auth);
+
   return (
     <View style={{ flexDirection: 'row' }}>
       {state.routes.map((route, index) => {
@@ -24,7 +27,6 @@ const TabBar = ({ state, descriptors, navigation }) => {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            // The `merge: true` option makes sure that the params inside the tab screen are preserved
             navigation.navigate({ name: route.name, merge: true });
           }
         };
@@ -54,7 +56,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
               }}
             >
               {label === 'Profile' ? (
-                <Avatar.Image source={require('../assets/img/person.jpg')} size={24} />
+                <Avatar.Image source={currentUser?.avatarUrl} size={24} />
               ) : (
                 <Icon
                   name={

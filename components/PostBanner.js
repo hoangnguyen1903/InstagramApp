@@ -1,13 +1,14 @@
 import { Image, TouchableOpacity, View } from 'react-native';
-import Poster2 from '../assets/img/poster-2.jpg';
 
-const PostBanner = ({ navigation }) => {
+const PostBanner = ({ navigation, post }) => {
+  const { id, imageUrl } = post;
+
   return (
     <TouchableOpacity
       style={{ position: 'relative', width: '33%', height: '120px' }}
-      onPress={() => navigation.navigate('Post')}
+      onPress={() => navigation.navigate('Post', { id })}
     >
-      <Image source={Poster2} style={{ width: '100%', height: '100%' }} />
+      <Image source={imageUrl} style={{ width: '100%', height: '100%' }} />
       <View
         style={{
           position: 'absolute',

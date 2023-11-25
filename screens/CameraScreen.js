@@ -6,10 +6,6 @@ const CameraScreen = () => {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
-  // if (!permission) ...
-
-  // if (!permission.granted) ...
-
   const toggleCameraType = () => {
     setType((current) => (current === CameraType.back ? CameraType.front : CameraType.back));
   };

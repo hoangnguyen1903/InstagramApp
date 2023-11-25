@@ -21,8 +21,8 @@ const Post = ({ item, handleHidePost }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentUser?.id !== user.id) {
-      const result = currentUser?.following?.find((us) => us.id === user.id);
+    if (currentUser?.id !== user?.id) {
+      const result = currentUser?.following?.find((us) => us.id === user?.id);
       if (result) {
         setFollow('unfollow');
       } else {
@@ -35,7 +35,7 @@ const Post = ({ item, handleHidePost }) => {
 
   useEffect(() => {
     if (likes) {
-      setNumOfLikes(likes.length);
+      setNumOfLikes(likes?.length);
       const result = likes?.find((us) => us.id === currentUser?.id);
       if (result) {
         isLike(true);
@@ -85,9 +85,9 @@ const Post = ({ item, handleHidePost }) => {
           }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Avatar.Image source={user.avatarUrl} size={50} />
+            <Avatar.Image source={user?.avatarUrl} size={50} />
             <View style={{ marginLeft: '10px' }}>
-              <Text style={{ fontStyle: 'italic', fontSize: '16px' }}>{user.userName}</Text>
+              <Text style={{ fontStyle: 'italic', fontSize: '16px' }}>{user?.userName}</Text>
               <Text style={{ fontSize: '16px', fontWeight: 'bold' }}>{location}</Text>
             </View>
           </View>
@@ -179,18 +179,18 @@ const Post = ({ item, handleHidePost }) => {
               alignItems: 'center',
             }}
           >
-            <Text style={{ fontWeight: 'bold', fontSize: '16px' }}>{user.userName}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: '16px' }}>{user?.userName}</Text>
             <Text style={{ fontWeight: '400', fontSize: '16px', marginLeft: '5px' }}>
               {caption}
             </Text>
           </View>
           <TouchableOpacity onPress={() => setModal(true)}>
             <Text style={{ fontSize: '16px', color: '#ccccc', marginBottom: '10px' }}>
-              Xem tất cả {comments.length} bình luận
+              Xem tất cả {comments?.length} bình luận
             </Text>
           </TouchableOpacity>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: '10px' }}>
-            <Avatar.Image source={user.avatarUrl} size={30} />
+            <Avatar.Image source={currentUser?.avatarUrl} size={30} />
             <TouchableOpacity style={{ marginLeft: '10px' }} onPress={() => setModal(true)}>
               <Text style={{ color: 'rgba(0,0,0,0.5)', fontSize: '16px' }}>Thêm bình luận...</Text>
             </TouchableOpacity>

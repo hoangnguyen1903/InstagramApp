@@ -40,7 +40,7 @@ const LoginScreen = ({ navigation }) => {
             borderColor: '#A6A6AA',
             borderStyle: 'solid',
             borderRadius: '10px',
-            color: '#A6A6AA',
+            color: 'black',
             fontWeight: '600',
             fontSize: '18px',
           }}
@@ -55,7 +55,7 @@ const LoginScreen = ({ navigation }) => {
             borderColor: '#A6A6AA',
             borderStyle: 'solid',
             borderRadius: '10px',
-            color: '#A6A6AA',
+            color: 'black',
             fontWeight: '600',
             fontSize: '18px',
             marginTop: '20px',

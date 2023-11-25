@@ -42,7 +42,7 @@ const Comment = ({ item }) => {
         marginBottom: '15px',
       }}
     >
-      <Avatar.Image size={50} source={require('../assets/img/person.jpg')} />
+      <Avatar.Image size={50} source={user?.avatarUrl} />
       <View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: '10px' }}>
           <Text
